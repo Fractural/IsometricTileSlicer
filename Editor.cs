@@ -37,14 +37,22 @@ public partial class Editor : Control
     [OnReadyGet]
     private SpinBox gridOffsetYSpinBox;
 
+    [OnReadyGet]
+    private SpinBox tileBorderSpinBox;
+
+    [OnReadyGet]
+    private CheckBox tileBorderEnabledToggle;
+
     private bool erasing;
     private bool painting;
 
     [OnReady]
     public void RealReady()
     {
+        tileBorderSpinBox.Value = triTileMap.TileBorder;
         gridEdgeLengthSpinBox.Value = triTileMap.EdgeLength;
         loadedTilesetPath = ProjectSettings.GlobalizePath(loadedTextureRect.Texture.ResourcePath);
+        tileBorderEnabledToggle.Pressed = triTileMap.TileBorderEnabled;
 
         gridOffsetXSpinBox.Value = triTileMap.GridOffset.x;
         gridOffsetYSpinBox.Value = triTileMap.GridOffset.y;
@@ -52,13 +60,17 @@ public partial class Editor : Control
         loadTilesheetButton.Connect("pressed", this, nameof(OnLoadTilesheetButtonPressed));
         saveTilesheetButton.Connect("pressed", this, nameof(OnSaveTilesheetButtonPressed));
 
+        tileBorderEnabledToggle.Connect("toggled", this, nameof(OnTileBorderEnabledChanged));
+
         saveTilesheetDialog.Connect("file_selected", this, nameof(OnSaveTilesheetDialogFileSelected));
         loadTilesheetDialog.Connect("file_selected", this, nameof(OnLoadTilesheetDialogFileSelected));
 
         gridEdgeLengthSpinBox.Connect("value_changed", this, nameof(OnGridEdgeLengthChanged));
         gridOffsetYSpinBox.Connect("value_changed", this, nameof(OnGridOffsetChanged));
         gridOffsetXSpinBox.Connect("value_changed", this, nameof(OnGridOffsetChanged));
-        
+
+        tileBorderSpinBox.Connect("value_changed", this, nameof(OnTileBorderChanged));
+
         this.FocusMode = FocusModeEnum.Click;
     }
 
@@ -99,6 +111,19 @@ public partial class Editor : Control
             }
         }
     }
+
+    private void OnTileBorderEnabledChanged(bool newValue)
+    {
+        triTileMap.TileBorderEnabled = newValue;
+        triTileMap.Update();
+    }
+
+    private void OnTileBorderChanged(double newValue)
+    {
+        triTileMap.TileBorder = (float)tileBorderSpinBox.Value;
+        triTileMap.Update();
+    }
+
     private void OnSaveTilesheetDialogFileSelected(string path)
     {
         CSharpSaveImage(path);
@@ -134,6 +159,7 @@ public partial class Editor : Control
     private void OnGridEdgeLengthChanged(double newValue)
     {
         triTileMap.EdgeLength = (int) gridEdgeLengthSpinBox.Value;
+        triTileMap.Update();
         infiniteGrid.Update();
     }
 
@@ -141,6 +167,7 @@ public partial class Editor : Control
     {
         // Update grid offset
         triTileMap.GridOffset = new Vector2((float) gridOffsetXSpinBox.Value, (float) gridOffsetYSpinBox.Value);
+        triTileMap.Update();
         infiniteGrid.Update();
     }
 
@@ -149,20 +176,26 @@ public partial class Editor : Control
         var boundingRect = triTileMap.GetBoundingRect();
 
         GraphicsPath graphicsPath = new GraphicsPath();   // a Graphicspath
-        foreach (var triPos in triTileMap.TriangleTiles)
-            graphicsPath.AddPolygon(triTileMap.TriCorners(triPos).Select(x => new PointF(x.x - boundingRect.Position.x, x.y - boundingRect.Position.y)).ToArray());        // with one Polygon
+        foreach (var polygon in triTileMap.GetAllTilePolygons())
+            graphicsPath.AddPolygon(polygon.Select(x => new PointF(x.x - boundingRect.Position.x, x.y - boundingRect.Position.y)).ToArray());        // with one Polygon
 
         Bitmap bitmap = (Bitmap)Bitmap.FromFile(loadedTilesetPath);
         Bitmap bitmap1 = new Bitmap((int) boundingRect.Size.x, (int)boundingRect.Size.y);
         bitmap1.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
 
-        using (Graphics graphics = Graphics.FromImage(bitmap1))
-        {
-            graphics.Clip = new Region(graphicsPath);   // restrict drawing region
+        Graphics graphics = Graphics.FromImage(bitmap1);
+
+        graphics.Clip = new Region(graphicsPath);   // restrict drawing region
             
-            graphics.DrawImage(bitmap, -boundingRect.Position.x, -boundingRect.Position.y);   // draw clipped
-            bitmap1.Save(path);
-        }
+        graphics.DrawImage(bitmap, -boundingRect.Position.x, -boundingRect.Position.y);   // draw clipped
+        bitmap1.Save(path);
+
+        var savedImageData = new Godot.Image();
+        savedImageData.Load(path);
+        var savedTexture = new ImageTexture();
+        savedTexture.CreateFromImage(savedImageData);
+        savedTextureRect.Texture = savedTexture;
+
         graphicsPath.Dispose();
     }
 

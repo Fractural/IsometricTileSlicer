@@ -10,26 +10,28 @@ public partial class TriangleTileMap : Node2D
     [Export]
     public float EdgeLength { get; set; }
     [Export]
+    public float TileBorder { get; set; } = 0;
+    [Export]
+    public bool TileBorderEnabled { get; set; } = false;
+    [Export]
     public float GridRotation { get; set; } = 30f;
     public HashSet<Vector3Int> TriangleTiles = new HashSet<Vector3Int>();
 
     // Returns a Rect2 that encloses all the triangle tiles
     public Rect2 GetBoundingRect()
     {
+        if (TileCount == 0)
+            return new Rect2();
+
         Rect2 box = new Rect2();
-        bool initBox = false;
-        foreach (var triTile in TriangleTiles)
+        box.Position = TriCorners(TriangleTiles.First())[0];
+        box.Size = Vector2.Zero;
+
+        foreach (var polygon in GetAllTilePolygons())
         {
-            foreach (var corner in TriCorners(triTile))
+            foreach (var vertex in polygon)
             {
-                // Initialize the box with the first corner we find
-                if (!initBox)
-                {
-                    initBox = true;
-                    box.Position = corner;
-                    box.Size = Vector2.Zero;
-                }
-                box = box.Expand(corner);
+                box = box.Expand(vertex);
             }
         }
         return box;
@@ -102,15 +104,20 @@ public partial class TriangleTileMap : Node2D
         }
     }
 
-    public Vector2 TriCenter(Vector3Int triPos)
+    public Vector2 TriCenter(Vector3 triPos)
     {
         var cartPos = new Vector2(
-            0.5f * triPos.x + -0.5f * triPos.z, 
+            0.5f * triPos.x + -0.5f * triPos.z,
             -sqrt3 / 6 * triPos.x + sqrt3 / 3 * triPos.y - sqrt3 / 6 * triPos.z
             ) * EdgeLength;
         cartPos = cartPos.Rotated(Mathf.Deg2Rad(GridRotation));
         cartPos += GridOffset;
         return cartPos;
+    }
+
+    public Vector2 TriCenter(Vector3Int triPos)
+    {
+        return TriCenter((Vector3) triPos);
     }
 
     public Vector3Int PickTri(Vector2 cartPos)
@@ -128,16 +135,16 @@ public partial class TriangleTileMap : Node2D
         if (TriPointsUp(triPos))
         {
             return new Vector2[] {
-                TriCenter(new Vector3Int(1 + triPos.x, triPos.y, triPos.z)),
-                TriCenter(new Vector3Int(triPos.x, triPos.y, 1 + triPos.z)),
-                TriCenter(new Vector3Int(triPos.x, 1 + triPos.y, triPos.z)),
+                TriCenter(new Vector3(1 + triPos.x, triPos.y, triPos.z)),
+                TriCenter(new Vector3(triPos.x, triPos.y, 1 + triPos.z)),
+                TriCenter(new Vector3(triPos.x, 1 + triPos.y, triPos.z)),
             };
         } else
         {
             return new Vector2[] {
-                TriCenter(new Vector3Int(-1 + triPos.x, triPos.y, triPos.z)),
-                TriCenter(new Vector3Int(triPos.x, triPos.y, -1 + triPos.z)),
-                TriCenter(new Vector3Int(triPos.x, -1 + triPos.y, triPos.z)),
+                TriCenter(new Vector3(-1 + triPos.x, triPos.y, triPos.z)),
+                TriCenter(new Vector3(triPos.x, triPos.y, -1 + triPos.z)),
+                TriCenter(new Vector3(triPos.x, -1 + triPos.y, triPos.z)),
             };
         }
     }
@@ -151,18 +158,75 @@ public partial class TriangleTileMap : Node2D
     {
         Color color = Colors.Red;
         color.a = 0.5f;
-        float width = 8f;
         var triPos = TriCorners(triPosition);
         DrawPolygon(triPos, new Color[] { color });
+    }
+
+    public Vector2[] GetTilePolygon(Vector3Int triPosition)
+    {
+        var trianglePolygon = TriCorners(triPosition);
+        if (!TileBorderEnabled || TileBorder == 0)
+            return trianglePolygon;
+
+        var godotPolygon = Geometry.OffsetPolyline2d(trianglePolygon.Append(trianglePolygon.First()).ToArray(), TileBorder, Geometry.PolyJoinType.Round, Geometry.PolyEndType.Round);
+        var outlinePolygon = godotPolygon[0] as Vector2[];
+        var finalPolygon = Geometry.MergePolygons2d(outlinePolygon, trianglePolygon)[0] as Vector2[];
+        return finalPolygon;
+    }
+
+    public List<Vector2[]> GetAllTilePolygons()
+    {
+        List<Vector2[]> allTilePolygons = new List<Vector2[]>();
+        HashSet<Vector3Int> checkedTriangleTiles = new HashSet<Vector3Int>();
+        foreach (var triPos in TriangleTiles)
+        {
+            if (checkedTriangleTiles.Contains(triPos))
+                continue;
+            checkedTriangleTiles.Add(triPos);
+
+            Vector2[] tilePolygon = GetTilePolygon(triPos);
+
+            if (TileBorderEnabled && TileBorder > 0)
+            {
+                // Try merge this tile with neighbors
+                Queue<Vector3Int> neighbors = new Queue<Vector3Int>();
+                foreach (var neighborPos in TriNeighbors(triPos))
+                    if (TriangleTiles.Contains(neighborPos) && !checkedTriangleTiles.Contains(neighborPos))
+                        neighbors.Enqueue(neighborPos);
+                while (neighbors.Count > 0)
+                {
+                    var currNeighbor = neighbors.Dequeue();
+                    var godotPolygon = Geometry.MergePolygons2d(tilePolygon, GetTilePolygon(currNeighbor));
+                    tilePolygon = godotPolygon[0] as Vector2[];
+                    checkedTriangleTiles.Add(currNeighbor);
+                    foreach (var neighborPos in TriNeighbors(currNeighbor))
+                        if (TriangleTiles.Contains(neighborPos) && !checkedTriangleTiles.Contains(neighborPos))
+                            neighbors.Enqueue(neighborPos);
+                }
+            }
+
+            // We have merged all possible neighbors
+            allTilePolygons.Add(tilePolygon);
+        }
+
+        // Try merge all polygons with each other
+
+        if (TileBorderEnabled && TileBorder > 0)
+            allTilePolygons = GeometryUtils.MergePolygons(allTilePolygons.ToArray()).ToList();
+
+        return allTilePolygons;
     }
 
     public override void _Draw()
     {
         base._Draw();
 
-        foreach (var triPos in TriangleTiles)
+        var allPolygons = GetAllTilePolygons();
+        foreach (var polygon in allPolygons)
         {
-            DrawTriangle(triPos);
+            Color color = Colors.Red;
+            color.a = 0.5f;
+            DrawPolygon(polygon, new Color[] { color });
         }
     }
 }
