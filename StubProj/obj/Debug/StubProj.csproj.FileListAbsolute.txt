@@ -1,0 +1,6 @@
+C:\Users\Alan\Documents\Godot\Projects\IsometricTileSlicer\StubProj\bin\Debug\StubProj.dll
+C:\Users\Alan\Documents\Godot\Projects\IsometricTileSlicer\StubProj\bin\Debug\StubProj.pdb
+C:\Users\Alan\Documents\Godot\Projects\IsometricTileSlicer\StubProj\obj\Debug\StubProj.csproj.AssemblyReference.cache
+C:\Users\Alan\Documents\Godot\Projects\IsometricTileSlicer\StubProj\obj\Debug\StubProj.csproj.CoreCompileInputs.cache
+C:\Users\Alan\Documents\Godot\Projects\IsometricTileSlicer\StubProj\obj\Debug\StubProj.dll
+C:\Users\Alan\Documents\Godot\Projects\IsometricTileSlicer\StubProj\obj\Debug\StubProj.pdb

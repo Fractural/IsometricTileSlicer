@@ -1,0 +1,222 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://EditorWorld.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Editor.cs" type="Script" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+focus_mode = 1
+mouse_filter = 2
+script = ExtResource( 2 )
+InfiniteGridPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/InfiniteTriangleGrid")
+TriTileMapPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/TriangleTileMap")
+SavedTextureRectPath = NodePath("Panel/HBoxContainer/VBoxContainer2/SavedTextureRect")
+LoadedTextureRectPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/LoadedTextureRect")
+LoadTilesheetButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer/LoadTilesheetButton")
+LoadTilesheetDialogPath = NodePath("LoadTilesheetDialog")
+SaveTilesheetButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer/SaveTilesheetButton")
+SaveTilesheetDialogPath = NodePath("SaveTilesheetDialog")
+GridEdgeLengthSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/HBoxContainer2/GridEdgeLength/GridEdgeLengthSpinBox")
+GridOffsetXSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/HBoxContainer2/GridOffset/OffsetXSpinBox")
+GridOffsetYSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/HBoxContainer2/GridOffset/OffsetYSpinBox")
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+mouse_filter = 2
+custom_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer"]
+margin_right = 840.0
+margin_bottom = 560.0
+mouse_filter = 2
+size_flags_horizontal = 3
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer"]
+margin_right = 840.0
+margin_bottom = 42.0
+custom_constants/separation = 20
+
+[node name="Main Controls" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_right = 404.0
+margin_bottom = 42.0
+
+[node name="Title Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls"]
+margin_right = 404.0
+margin_bottom = 14.0
+text = "Tile Slicer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls"]
+margin_top = 18.0
+margin_right = 404.0
+margin_bottom = 42.0
+mouse_filter = 2
+
+[node name="LoadTilesheetButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer"]
+margin_right = 105.0
+margin_bottom = 24.0
+text = "Load Tilesheet"
+
+[node name="SaveTilesheetButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer"]
+margin_left = 109.0
+margin_right = 274.0
+margin_bottom = 24.0
+text = "Slice and Save Tilesheet"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Erase Button" type="CheckBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer"]
+margin_left = 278.0
+margin_right = 340.0
+margin_bottom = 24.0
+text = "Erase"
+
+[node name="Paint Button" type="CheckBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer"]
+margin_left = 344.0
+margin_right = 404.0
+margin_bottom = 24.0
+text = "Paint"
+
+[node name="Grid Options" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 424.0
+margin_right = 840.0
+margin_bottom = 42.0
+
+[node name="Grid Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options"]
+margin_right = 416.0
+margin_bottom = 14.0
+text = "Grid Options"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options"]
+margin_top = 18.0
+margin_right = 416.0
+margin_bottom = 42.0
+mouse_filter = 2
+
+[node name="GridEdgeLength" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/HBoxContainer2"]
+margin_right = 186.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/HBoxContainer2/GridEdgeLength"]
+margin_top = 5.0
+margin_right = 108.0
+margin_bottom = 19.0
+text = "Grid Edge Length"
+
+[node name="GridEdgeLengthSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/HBoxContainer2/GridEdgeLength"]
+margin_left = 112.0
+margin_right = 186.0
+margin_bottom = 24.0
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="GridOffset" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/HBoxContainer2"]
+margin_left = 190.0
+margin_right = 416.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/HBoxContainer2/GridOffset"]
+margin_top = 5.0
+margin_right = 70.0
+margin_bottom = 19.0
+text = "Grid Offset"
+
+[node name="OffsetXSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/HBoxContainer2/GridOffset"]
+margin_left = 74.0
+margin_right = 148.0
+margin_bottom = 24.0
+allow_greater = true
+allow_lesser = true
+
+[node name="OffsetYSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/HBoxContainer2/GridOffset"]
+margin_left = 152.0
+margin_right = 226.0
+margin_bottom = 24.0
+allow_greater = true
+allow_lesser = true
+
+[node name="ViewportContainer" type="ViewportContainer" parent="Panel/HBoxContainer/VBoxContainer"]
+margin_top = 52.0
+margin_right = 840.0
+margin_bottom = 560.0
+mouse_filter = 2
+size_flags_vertical = 3
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="Panel/HBoxContainer/VBoxContainer/ViewportContainer"]
+size = Vector2( 840, 508 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="EditorWorld" parent="Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport" instance=ExtResource( 1 )]
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/HBoxContainer"]
+margin_left = 860.0
+margin_right = 1060.0
+margin_bottom = 560.0
+rect_min_size = Vector2( 200, 0 )
+mouse_filter = 2
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer2"]
+margin_right = 200.0
+margin_bottom = 14.0
+text = "Saved Texture"
+
+[node name="SavedTextureRect" type="TextureRect" parent="Panel/HBoxContainer/VBoxContainer2"]
+margin_top = 24.0
+margin_right = 200.0
+margin_bottom = 88.0
+mouse_filter = 2
+texture = ExtResource( 3 )
+
+[node name="LoadTilesheetDialog" type="FileDialog" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = 100.0
+margin_right = -200.0
+margin_bottom = -100.0
+window_title = "Load a Tilesheet"
+resizable = true
+mode = 0
+access = 2
+filters = PoolStringArray( "*.png ; PNG Images" )
+current_dir = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer"
+current_path = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer/"
+
+[node name="SaveTilesheetDialog" type="FileDialog" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = 100.0
+margin_right = -200.0
+margin_bottom = -100.0
+window_title = "Save Cropped Tilesheet"
+resizable = true
+access = 2
+filters = PoolStringArray( "*.png ; PNG Images" )
+current_dir = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer"
+current_path = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer/"
+
+[editable path="Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld"]
