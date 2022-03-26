@@ -12,7 +12,7 @@ mouse_filter = 2
 script = ExtResource( 2 )
 InfiniteGridPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/InfiniteTriangleGrid")
 TriTileMapPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/TriangleTileMap")
-SavedTextureRectPath = NodePath("Panel/HBoxContainer/VBoxContainer2/SavedTextureRect")
+SavedTextureRectPath = NodePath("")
 LoadedTextureRectPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/LoadedTextureRect")
 LoadTilesheetButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer/LoadTilesheetButton")
 LoadTilesheetDialogPath = NodePath("LoadTilesheetDialog")
@@ -197,18 +197,53 @@ margin_right = 984.0
 margin_bottom = 560.0
 mouse_filter = 2
 custom_constants/separation = 10
-alignment = 1
 
-[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer2"]
-margin_top = 193.0
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer2"]
 margin_right = 150.0
-margin_bottom = 207.0
+margin_bottom = 376.0
+mouse_filter = 2
+size_flags_vertical = 3
+custom_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer2/VBoxContainer2"]
+margin_right = 150.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer2/VBoxContainer2/HBoxContainer"]
+margin_top = 3.0
+margin_right = 126.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Layers"
+
+[node name="AddLayerButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer2/VBoxContainer2/HBoxContainer"]
+margin_left = 130.0
+margin_right = 150.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="LayersTree" type="Tree" parent="Panel/HBoxContainer/VBoxContainer2/VBoxContainer2"]
+margin_top = 30.0
+margin_right = 150.0
+margin_bottom = 376.0
+size_flags_vertical = 3
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer2"]
+margin_top = 386.0
+margin_right = 150.0
+margin_bottom = 560.0
+mouse_filter = 2
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer2/VBoxContainer3"]
+margin_right = 150.0
+margin_bottom = 14.0
 text = "Saved Texture"
 
-[node name="SavedTextureRect" type="TextureRect" parent="Panel/HBoxContainer/VBoxContainer2"]
-margin_top = 217.0
+[node name="SavedTextureRect" type="TextureRect" parent="Panel/HBoxContainer/VBoxContainer2/VBoxContainer3"]
+margin_top = 24.0
 margin_right = 150.0
-margin_bottom = 367.0
+margin_bottom = 174.0
 rect_min_size = Vector2( 150, 150 )
 mouse_filter = 2
 texture = ExtResource( 3 )

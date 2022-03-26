@@ -41,6 +41,21 @@ public partial class Editor : Control
     private SpinBox tileBorderSpinBox;
 
     [OnReadyGet]
+    private Button addLayerButton;
+    [OnReadyGet]
+    private PopupDialog addLayerPopup;
+    [OnReadyGet]
+    private LineEdit newLayerLineEdit;
+    [OnReadyGet]
+    private PopupDialog renameLayerPopup;
+    [OnReadyGet]
+    private LineEdit renameLayerLineEdit;
+    [OnReadyGet]
+    private Tree layersTree;
+
+    // TODO: Add tree items
+
+    [OnReadyGet]
     private CheckBox tileBorderEnabledToggle;
 
     private bool erasing;
