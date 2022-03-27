@@ -12,7 +12,7 @@ public partial class Editor : Control
     public enum Columns
     {
         LayerName = 0,
-        VisibleToggle = 1,
+        VisibleToggle = 0,
     }
 
     public enum ButtonID
@@ -24,6 +24,7 @@ public partial class Editor : Control
     public Layer CurrentLayer { get; set; }
 
     private string loadedTilesetPath;
+    private TreeItem prevSelectedItem;
 
     [Export]
     private PackedScene layerPrefab;
@@ -63,8 +64,6 @@ public partial class Editor : Control
     [OnReadyGet]
     private Button deleteCurrentLayerButton;
     [OnReadyGet]
-    private LineEdit layerNameLineEdit;
-    [OnReadyGet]
     private ColorPickerButton layerColorPickerButton;
     [OnReadyGet]
     private Tree layersTree;
@@ -95,7 +94,6 @@ public partial class Editor : Control
 
         addLayerButton.Connect("pressed", this, nameof(AddNewLayer));
         deleteCurrentLayerButton.Connect("pressed", this, nameof(DeleteCurrentLayer));
-        layerNameLineEdit.Connect("text_changed", this, nameof(OnLayerNameChanged));
         layerColorPickerButton.Connect("color_changed", this, nameof(OnLayerColorChanged));
 
         loadTilesheetButton.Connect("pressed", this, nameof(OnLoadTilesheetButtonPressed));
@@ -125,10 +123,11 @@ public partial class Editor : Control
     {
         layersTree.HideRoot = true;
         layersTreeRoot = layersTree.CreateItem();
-        layersTree.SelectMode = Tree.SelectModeEnum.Row;
+        layersTree.SelectMode = Tree.SelectModeEnum.Single;
         layersTree.Connect("button_pressed", this, nameof(OnLayerTreeButtonPressed));
         layersTree.Connect("item_selected", this, nameof(OnLayerTreeItemSelected));
-        layersTree.Columns = 2;
+        layersTree.Connect("item_edited", this, nameof(OnLayerTreeItemEdited));
+        layersTree.Columns = 1;
         layersTree.SetColumnExpand((int) Columns.LayerName, true);
 
         UpdateTilemap(infiniteGrid.TargetTileMap);
@@ -144,11 +143,28 @@ public partial class Editor : Control
         tileMap.GridOffset = new Vector2((float)gridOffsetXSpinBox.Value, (float)gridOffsetYSpinBox.Value);
     }
 
+    private void OnLayerTreeItemEdited()
+    {
+        TreeItem editedItem = layersTree.GetEdited();
+        int editedColumn = layersTree.GetEditedColumn();
+        if (editedColumn == (int) Columns.LayerName)
+        {
+            var layer = editedItem.GetMetadata((int) Columns.LayerName) as Layer;
+            layer.LayerName = editedItem.GetText(editedColumn);
+        }
+    }
+
     private void OnLayerTreeItemSelected()
     {
+        var selectedItem = GetCurrentLayerItem();
+
+        if (prevSelectedItem != null)
+            prevSelectedItem.SetEditable((int)Columns.LayerName, false);
+        prevSelectedItem = selectedItem;
+
+        selectedItem.CallDeferred("set_editable", (int)Columns.LayerName, true);
         layerOptions.Visible = true;
         var selectedLayer = GetCurrentLayer();
-        layerNameLineEdit.Text = selectedLayer.LayerName;
         layerColorPickerButton.Color = selectedLayer.LayerColor;
     }
 
@@ -164,6 +180,7 @@ public partial class Editor : Control
         // Add tree item
         TreeItem layerItem = layersTree.CreateItem(layersTreeRoot);
         layerItem.SetText((int) Columns.LayerName, nextFreeName);
+        layerItem.SetEditable((int) Columns.LayerName, false);
         layerItem.AddButton((int) Columns.VisibleToggle, GetIcon("GuiVisibilityVisible", "EditorIcons"), (int)ButtonID.VisibleToggle);
         layerItem.SetMetadata((int)Columns.LayerName, newLayer);
     }
@@ -205,16 +222,6 @@ public partial class Editor : Control
             // Update visibility button
             item.SetButton((int) Columns.VisibleToggle, (int)ButtonID.VisibleToggle, targetLayer.Visible ? GetIcon("GuiVisibilityVisible", "EditorIcons") : GetIcon("GuiVisibilityHidden", "EditorIcons"));
         }
-    }
-
-    private void OnLayerNameChanged(string newName)
-    {
-        var currentLayer = GetCurrentLayer();
-        if (currentLayer == null)
-            return;
-        currentLayer.LayerName = newName;
-        var treeItem = GetCurrentLayerItem();
-        treeItem.SetText((int) Columns.LayerName, newName);
     }
 
     private void OnLayerColorChanged(Color newColor)

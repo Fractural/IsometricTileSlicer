@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Tileset Bookshelf 2.png-b6f89033734c45ccb60be74de3298c73.stex"
+path="res://.import/Tileset_Bookshelf 1.png-064b86aa75d1ddb246aac6e7e55eefbc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Testing/Exported/Tileset Bookshelf 2.png"
-dest_files=[ "res://.import/Tileset Bookshelf 2.png-b6f89033734c45ccb60be74de3298c73.stex" ]
+source_file="res://Testing/Exported/Tileset_Bookshelf 1.png"
+dest_files=[ "res://.import/Tileset_Bookshelf 1.png-064b86aa75d1ddb246aac6e7e55eefbc.stex" ]
 
 [params]
 

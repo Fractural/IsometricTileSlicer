@@ -27,7 +27,6 @@ GridOffsetYSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContain
 TileBorderSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/GridTileBorderSpinBox")
 AddLayerButtonPath = NodePath("Panel/HBoxContainer/RightTab/Layers/VBoxContainer2/HBoxContainer/AddLayerButton")
 DeleteCurrentLayerButtonPath = NodePath("Panel/HBoxContainer/RightTab/LayerOptions/DeleteLayerButton")
-LayerNameLineEditPath = NodePath("Panel/HBoxContainer/RightTab/LayerOptions/LayerName/LayerNameLineEdit")
 LayerColorPickerButtonPath = NodePath("Panel/HBoxContainer/RightTab/LayerOptions/Color/LayerColorButton")
 LayersTreePath = NodePath("Panel/HBoxContainer/RightTab/Layers/VBoxContainer2/LayersTree")
 TileBorderEnabledTogglePath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/HBoxContainer/GridTileBorderEnabledCheckBox")
@@ -222,12 +221,12 @@ custom_constants/separation = 10
 
 [node name="Layers" type="HBoxContainer" parent="Panel/HBoxContainer/RightTab"]
 margin_right = 250.0
-margin_bottom = 258.0
+margin_bottom = 284.0
 size_flags_vertical = 3
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Panel/HBoxContainer/RightTab/Layers"]
 margin_right = 250.0
-margin_bottom = 258.0
+margin_bottom = 284.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -253,11 +252,11 @@ text = "+"
 [node name="LayersTree" type="Tree" parent="Panel/HBoxContainer/RightTab/Layers/VBoxContainer2"]
 margin_top = 32.0
 margin_right = 250.0
-margin_bottom = 258.0
+margin_bottom = 284.0
 size_flags_vertical = 3
 
 [node name="LayerOptions" type="VBoxContainer" parent="Panel/HBoxContainer/RightTab"]
-margin_top = 268.0
+margin_top = 294.0
 margin_right = 250.0
 margin_bottom = 368.0
 
@@ -266,27 +265,10 @@ margin_right = 250.0
 margin_bottom = 22.0
 text = "Layer Options"
 
-[node name="LayerName" type="HBoxContainer" parent="Panel/HBoxContainer/RightTab/LayerOptions"]
+[node name="Color" type="HBoxContainer" parent="Panel/HBoxContainer/RightTab/LayerOptions"]
 margin_top = 26.0
 margin_right = 250.0
 margin_bottom = 48.0
-
-[node name="Label" type="Label" parent="Panel/HBoxContainer/RightTab/LayerOptions/LayerName"]
-margin_right = 100.0
-margin_bottom = 22.0
-rect_min_size = Vector2( 100, 0 )
-text = "Name"
-
-[node name="LayerNameLineEdit" type="LineEdit" parent="Panel/HBoxContainer/RightTab/LayerOptions/LayerName"]
-margin_left = 104.0
-margin_right = 250.0
-margin_bottom = 22.0
-size_flags_horizontal = 3
-
-[node name="Color" type="HBoxContainer" parent="Panel/HBoxContainer/RightTab/LayerOptions"]
-margin_top = 52.0
-margin_right = 250.0
-margin_bottom = 74.0
 
 [node name="Label" type="Label" parent="Panel/HBoxContainer/RightTab/LayerOptions/Color"]
 margin_right = 100.0
@@ -302,9 +284,9 @@ size_flags_horizontal = 3
 color = Color( 1, 0, 0, 1 )
 
 [node name="DeleteLayerButton" type="Button" parent="Panel/HBoxContainer/RightTab/LayerOptions"]
-margin_top = 78.0
+margin_top = 52.0
 margin_right = 250.0
-margin_bottom = 100.0
+margin_bottom = 74.0
 text = "Delete"
 
 [node name="SavedTexture" type="VBoxContainer" parent="Panel/HBoxContainer/RightTab"]
