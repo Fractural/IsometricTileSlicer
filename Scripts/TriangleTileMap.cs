@@ -25,6 +25,8 @@ public partial class TriangleTileMap : Node2D
     [Export]
     public bool TileBorderEnabled { get; set; } = false;
     [Export]
+    public Vector2 GridScale { get; set; } = Vector2.One;
+    [Export]
     public float GridRotation { get; set; } = 30f;
     public HashSet<Vector3Int> TriangleTiles = new HashSet<Vector3Int>();
 
@@ -134,6 +136,8 @@ public partial class TriangleTileMap : Node2D
             -sqrt3 / 6 * triPos.x + sqrt3 / 3 * triPos.y - sqrt3 / 6 * triPos.z
             ) * EdgeLength;
         cartPos = cartPos.Rotated(Mathf.Deg2Rad(GridRotation));
+        cartPos.x *= GridScale.x;
+        cartPos.y *= GridScale.y;
         cartPos += GridOffset;
         return cartPos;
     }
@@ -146,6 +150,8 @@ public partial class TriangleTileMap : Node2D
     public Vector3Int PickTri(Vector2 cartPos)
     {
         cartPos -= GridOffset;
+        cartPos.x /= GridScale.x;
+        cartPos.y /= GridScale.y;
         cartPos = cartPos.Rotated(Mathf.Deg2Rad(-GridRotation));
         return new Vector3Int(
             (int) Mathf.Ceil((  1   * cartPos.x -   sqrt3       / 3 * cartPos.y) / EdgeLength),

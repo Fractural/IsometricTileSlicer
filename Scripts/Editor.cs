@@ -76,6 +76,11 @@ public partial class Editor : Control
     private SpinBox gridOffsetYSpinBox;
 
     [OnReadyGet]
+    private SpinBox gridScaleXSpinBox;
+    [OnReadyGet]
+    private SpinBox gridScaleYSpinBox;
+
+    [OnReadyGet]
     private SpinBox tileBorderSpinBox;
 
     [OnReadyGet]
@@ -128,6 +133,9 @@ public partial class Editor : Control
         gridOffsetYSpinBox.Connect("value_changed", this, nameof(OnGridOffsetChanged));
         gridOffsetXSpinBox.Connect("value_changed", this, nameof(OnGridOffsetChanged));
 
+        gridScaleXSpinBox.Connect("value_changed", this, nameof(OnGridScaleChanged));
+        gridScaleYSpinBox.Connect("value_changed", this, nameof(OnGridScaleChanged));
+
         tileBorderSpinBox.Connect("value_changed", this, nameof(OnTileBorderChanged));
 
         addLayerButton.Text = "";
@@ -139,7 +147,6 @@ public partial class Editor : Control
         jsonOptions.IncludeFields = true;
 
         layersTree.HideRoot = true;
-        layersTreeRoot = layersTree.CreateItem();
         layersTree.SelectMode = Tree.SelectModeEnum.Single;
         layersTree.Connect("button_pressed", this, nameof(OnLayerTreeButtonPressed));
         layersTree.Connect("item_selected", this, nameof(OnLayerTreeItemSelected));
@@ -151,7 +158,7 @@ public partial class Editor : Control
 
         layerOptions.Visible = false;
     }
-    
+
     public void Reset(bool resetLoadedProject = true)
     {
         loadedTextureRect.Texture = null;
@@ -166,6 +173,9 @@ public partial class Editor : Control
         }
         loadedTilesheetLabel.Text = "";
         tileBorderEnabledToggle.Pressed = false;
+
+        gridScaleXSpinBox.Value = 1;
+        gridScaleYSpinBox.Value = 1;
 
         gridOffsetXSpinBox.Value = 0;
         gridOffsetYSpinBox.Value = 32;
@@ -228,8 +238,9 @@ public partial class Editor : Control
     {
         tileMap.TileBorderEnabled = tileBorderEnabledToggle.Pressed;
         tileMap.TileBorder = (float)tileBorderSpinBox.Value;
-        tileMap.EdgeLength = (int)gridEdgeLengthSpinBox.Value;
+        tileMap.EdgeLength = (float)gridEdgeLengthSpinBox.Value;
         tileMap.GridOffset = new Vector2((float)gridOffsetXSpinBox.Value, (float)gridOffsetYSpinBox.Value);
+        tileMap.GridScale = new Vector2((float)gridScaleXSpinBox.Value, (float)gridScaleYSpinBox.Value);
     }
 
     private void OnLayerTreeItemEdited()
@@ -448,10 +459,10 @@ public partial class Editor : Control
 
     private void OnGridEdgeLengthChanged(double newValue)
     {
-        infiniteGrid.TargetTileMap.EdgeLength = (int)gridEdgeLengthSpinBox.Value;
+        infiniteGrid.TargetTileMap.EdgeLength = (float)gridEdgeLengthSpinBox.Value;
         foreach (var layer in Layers)
         {
-            layer.TriTileMap.EdgeLength = (int)gridEdgeLengthSpinBox.Value;
+            layer.TriTileMap.EdgeLength = (float)gridEdgeLengthSpinBox.Value;
             layer.TriTileMap.Update();
         }
         infiniteGrid.Update();
@@ -468,6 +479,20 @@ public partial class Editor : Control
         }
         infiniteGrid.Update();
     }
+
+
+    private void OnGridScaleChanged(float newValue)
+    {
+        Vector2 scale = new Vector2((float) gridScaleXSpinBox.Value, (float) gridScaleYSpinBox.Value);
+        infiniteGrid.TargetTileMap.GridScale = scale;
+        foreach (var layer in Layers)
+        {
+            layer.TriTileMap.GridScale = scale;
+            layer.TriTileMap.Update();
+        }
+        infiniteGrid.Update();
+    }
+
 
     public void CSharpSaveImage(string path, Layer layer)
     {
@@ -522,13 +547,15 @@ public partial class Editor : Control
         public bool TileBorderEnabled { get; set; }
         public int GridEdgeLength { get; set; }
         public Vector2Int GridOffset { get; set; }
+        public Vector2 GridScale { get; set; }
         public string LoadedTilesetPath { get; set; }
     }
 
     public Data Serialize(string savePath = "")
     {
         var data = new Data();
-
+        
+        data.GridScale = new Vector2((float) gridScaleXSpinBox.Value, (float) gridScaleYSpinBox.Value);
         data.GridOffset = new Vector2Int((int)gridOffsetXSpinBox.Value, (int)gridOffsetYSpinBox.Value);
         data.GridEdgeLength = (int)gridEdgeLengthSpinBox.Value;
         data.TileBorder = (int)tileBorderSpinBox.Value;
@@ -554,6 +581,9 @@ public partial class Editor : Control
     {
         Reset(false);
 
+        // TODO: Make a dedicated node for Vector2
+        gridScaleXSpinBox.Value = data.GridScale.x;
+        gridScaleYSpinBox.Value = data.GridScale.y;
         gridOffsetXSpinBox.Value = data.GridOffset.x;
         gridOffsetYSpinBox.Value = data.GridOffset.y;
         gridEdgeLengthSpinBox.Value = data.GridEdgeLength;

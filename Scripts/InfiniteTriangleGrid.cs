@@ -61,27 +61,56 @@ public partial class InfiniteTriangleGrid : Node2D
         visibleRectGlobal.Position = paddedStart;
         visibleRectGlobal.End = paddedEnd;
 
-        float diagonalLineLength = visibleRectGlobal.Size.y / Mathf.Sin(Mathf.Deg2Rad(30f));
-        float verticalLineLength = visibleRectGlobal.Size.y;
+        //   Diagram
+        //
+        //                ...''|''...                 +
+        //          ...'''     |     '''...           |
+        //    ...'''           |           '''...     |--- vertExtent
+        //   +-----------------+-----------------+    +
+        //    '''...           |           ...'''     
+        //          '''...     |     ...'''           
+        //                '''..|..'''                 
+        //
+        //   +--------+--------+
+        //            |
+        //      horzExtend
+        
+        float vertExtent = TargetTileMap.EdgeLength * TargetTileMap.GridScale.y / 2f;
+        float horzExtent = Mathf.Sqrt(TargetTileMap.EdgeLength * TargetTileMap.EdgeLength - TargetTileMap.EdgeLength / 2f * TargetTileMap.EdgeLength / 2f) * TargetTileMap.GridScale.x;
 
-        float horzEdgeLength = TargetTileMap.EdgeLength * Mathf.Cos(Mathf.Deg2Rad(30f));
-        float vertEdgeLength = TargetTileMap.EdgeLength;
+        // Half tri
+        //
+        // |''...               +
+        // |     '''...         |
+        // |        A .'''...   |--- vertExtent
+        // +----------"------+  +
+        //
+        // +-------+---------+
+        //         |
+        //     horzExtent
+        //
+        // Let A = angle
+        
+        float angle = Mathf.Atan(vertExtent / horzExtent);
+
+        float diagonalLineLength = visibleRectGlobal.Size.y / Mathf.Sin(angle);
+        float verticalLineLength = visibleRectGlobal.Size.y;
 
         Vector3Int topLeftTriPos = TargetTileMap.PickTri(visibleRectGlobal.Position);
         Vector2 topLeftCartPos = TargetTileMap.TriCorners(topLeftTriPos)[0];
         // Make sure totalHorzLengths is a multiple of two
-        int totalHorzLengths = (int) (visibleRectGlobal.Size.x / (horzEdgeLength * 2)) * 2;
-        int totalVertLengths = (int) (visibleRectGlobal.Size.y / vertEdgeLength);
-        Vector2 topRightCartPos = new Vector2(topLeftCartPos.x + totalHorzLengths * horzEdgeLength, topLeftCartPos.y);
-
+        int totalHorzExtents = (int) (visibleRectGlobal.Size.x / horzExtent) * 2;
+        int totalDoubleVertExtents = (int) (visibleRectGlobal.Size.y / vertExtent * 2f);
+        Vector2 topRightCartPos = new Vector2(topLeftCartPos.x + totalHorzExtents * horzExtent, topLeftCartPos.y);
+        
         int counter = 0;
         
         var verticalLine = Vector2.Down * verticalLineLength;
-        var diagonalLineOne = Vector2.Right.Rotated(Mathf.Deg2Rad(30)) * diagonalLineLength;
-        var diagonalLineTwo = Vector2.Right.Rotated(Mathf.Deg2Rad(180 - 30)) * diagonalLineLength;
-        for (int i = 0; i <= totalHorzLengths; i ++)
+        var diagonalLineOne = Vector2.Right.Rotated(angle) * diagonalLineLength;
+        var diagonalLineTwo = Vector2.Right.Rotated(Mathf.Deg2Rad(180) - angle) * diagonalLineLength;
+        for (int i = 0; i <= totalHorzExtents; i ++)
         {
-            var currTopPos = new Vector2(topLeftCartPos.x + i * horzEdgeLength, topLeftCartPos.y);
+            var currTopPos = new Vector2(topLeftCartPos.x + i * horzExtent, topLeftCartPos.y);
             if (counter % 2 == 0)
             {
                 // Draw diagonal lines every 2 horizontal distances
@@ -95,12 +124,12 @@ public partial class InfiniteTriangleGrid : Node2D
         }
 
         // Draw first and last positions
-        for (int i = 1; i < totalVertLengths; i++)
+        for (int i = 1; i < totalDoubleVertExtents; i++)
         {
-            var currTopLeftPos = new Vector2(topLeftCartPos.x, topLeftCartPos.y + i * vertEdgeLength);
+            var currTopLeftPos = new Vector2(topLeftCartPos.x, topLeftCartPos.y + i * vertExtent * 2f);
             DrawLine(currTopLeftPos, currTopLeftPos + diagonalLineOne, GridLineColor, GridLineThickness);
             
-            var currTopRightPos = new Vector2(topRightCartPos.x, topRightCartPos.y + i * vertEdgeLength);
+            var currTopRightPos = new Vector2(topRightCartPos.x, topRightCartPos.y + i * vertExtent * 2f);
             DrawLine(currTopRightPos, currTopRightPos + diagonalLineTwo, GridLineColor, GridLineThickness);
         }
     }
