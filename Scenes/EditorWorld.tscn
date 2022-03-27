@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scripts/DebugCameraController.cs" type="Script" id=1]
-[ext_resource path="res://Testing/Tileset.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/CameraController.cs" type="Script" id=1]
+[ext_resource path="res://Testing/Project/Tileset.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/TriangleTileMap.cs" type="Script" id=3]
 [ext_resource path="res://Scripts/InfiniteTriangleGrid.cs" type="Script" id=4]
 

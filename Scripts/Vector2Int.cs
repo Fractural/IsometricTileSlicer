@@ -1,4 +1,6 @@
 using Godot;
+using System;
+using System.Text.Json.Serialization;
 
 public struct Vector2Int
 {

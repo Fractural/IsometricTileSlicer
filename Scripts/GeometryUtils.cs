@@ -2,6 +2,24 @@ using Godot;
 using System.Collections.Generic;
 using System.Linq;
 
+public static class StringUtils
+{
+    public static string TryGetSiblingOrChildRelativeFilePath(this string path, string sibilingOrChildPath)
+    {
+        var baseDir = path.GetBaseDir();
+        if (path == "" || !sibilingOrChildPath.StartsWith(baseDir))
+            return sibilingOrChildPath;
+        return "." + sibilingOrChildPath.Substring(baseDir.Length);
+    }
+
+    public static string TryGetAbsolutePath(this string path, string relativePath)
+    {
+        if (relativePath.StartsWith("./"))
+            return path.GetBaseDir() + relativePath.Substring(1);
+        return relativePath;
+    }
+}
+
 public static class GeometryUtils
 {
     public static Vector2[][] MergePolygons(params Vector2[][] polygons)

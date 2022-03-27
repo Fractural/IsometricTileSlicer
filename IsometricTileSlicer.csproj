@@ -4,5 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GodotOnReady" Version="1.1.5" />
+    <PackageReference Include="System.Text.Json" Version="7.0.0-preview.2.22152.2" />
   </ItemGroup>
 </Project>

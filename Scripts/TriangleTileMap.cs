@@ -57,6 +57,18 @@ public partial class TriangleTileMap : Node2D
         return TriangleTiles.Contains(trianglePos);
     }
 
+    public void AddTiles(IEnumerable<Vector3Int> addTiles)
+    {
+        foreach (var tile in addTiles)
+            TriangleTiles.Add(tile);
+    }
+
+    public void RemoveTiles(IEnumerable<Vector3Int> removeTiles)
+    {
+        foreach (var tile in removeTiles)
+            TriangleTiles.Remove(tile);
+    }
+
     public bool HasTileAtCartPos(Vector2 cartPos)
     {
         return TriangleTiles.Contains(PickTri(cartPos));

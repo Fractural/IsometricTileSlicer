@@ -14,22 +14,29 @@ mouse_filter = 2
 theme = ExtResource( 1 )
 script = ExtResource( 5 )
 LayersHolderPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/LayersHolder")
+CameraControllerPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/Camera2D")
 InfiniteGridPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/InfiniteTriangleGrid")
 SavedTextureRectPath = NodePath("Panel/HBoxContainer/RightTab/SavedTexture/SavedTextureRect")
 LoadedTextureRectPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/LoadedTextureRect")
-LoadTilesheetButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer/LoadTilesheetButton")
+LoadedProjectLabelPath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/LoadedProject/LoadedProjectLabel")
+LoadedTilesheetLabelPath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/LoadedTilesheet/LoadedTilesheetLabel")
+SaveProjectButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/Grid/SaveProjectButton")
+SaveProjectDialogPath = NodePath("SaveProjectDialog")
+LoadProjectButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/Grid/LoadProjectButton")
+LoadProjectDialogPath = NodePath("LoadProjectDialog")
+LoadTilesheetButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/Grid/LoadTilesheetButton")
 LoadTilesheetDialogPath = NodePath("LoadTilesheetDialog")
-SaveTilesheetButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer/SaveTilesheetButton")
+SaveTilesheetButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/Grid/SaveTilesheetButton")
 SaveTilesheetDialogPath = NodePath("SaveTilesheetDialog")
-GridEdgeLengthSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridEdgeLength/GridEdgeLengthSpinBox")
-GridOffsetXSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset/OffsetXSpinBox")
-GridOffsetYSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset/OffsetYSpinBox")
-TileBorderSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/GridTileBorderSpinBox")
+GridEdgeLengthSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridEdgeLength/GridEdgeLengthSpinBox")
+GridOffsetXSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset/OffsetXSpinBox")
+GridOffsetYSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset/OffsetYSpinBox")
+TileBorderSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/GridTileBorderSpinBox")
 AddLayerButtonPath = NodePath("Panel/HBoxContainer/RightTab/Layers/VBoxContainer2/HBoxContainer/AddLayerButton")
 DeleteCurrentLayerButtonPath = NodePath("Panel/HBoxContainer/RightTab/LayerOptions/DeleteLayerButton")
 LayerColorPickerButtonPath = NodePath("Panel/HBoxContainer/RightTab/LayerOptions/Color/LayerColorButton")
 LayersTreePath = NodePath("Panel/HBoxContainer/RightTab/Layers/VBoxContainer2/LayersTree")
-TileBorderEnabledTogglePath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/HBoxContainer/GridTileBorderEnabledCheckBox")
+TileBorderEnabledTogglePath = NodePath("Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/HBoxContainer/GridTileBorderEnabledCheckBox")
 LayerOptionsPath = NodePath("Panel/HBoxContainer/RightTab/LayerOptions")
 layerPrefab = ExtResource( 3 )
 
@@ -49,7 +56,7 @@ mouse_filter = 2
 custom_constants/separation = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer"]
-margin_right = 714.0
+margin_right = 730.0
 margin_bottom = 560.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -58,75 +65,90 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer"]
-margin_right = 714.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer"]
+margin_right = 730.0
+margin_bottom = 128.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer"]
+margin_right = 730.0
 margin_bottom = 76.0
 custom_constants/separation = 20
 
-[node name="Main Controls" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3"]
-margin_right = 135.0
+[node name="Main Controls" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_right = 206.0
 margin_bottom = 76.0
 
-[node name="Title Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls"]
-margin_right = 135.0
+[node name="Title Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Main Controls"]
+margin_right = 206.0
 margin_bottom = 22.0
 text = "Tile Slicer"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls"]
+[node name="Grid" type="GridContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Main Controls"]
 margin_top = 26.0
-margin_right = 135.0
-margin_bottom = 48.0
+margin_right = 206.0
+margin_bottom = 74.0
 mouse_filter = 2
+columns = 2
 
-[node name="LoadTilesheetButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer"]
-margin_right = 42.0
+[node name="LoadTilesheetButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/Grid"]
+margin_right = 105.0
 margin_bottom = 22.0
-text = "Load"
+text = "Load Tilesheet"
 
-[node name="SaveTilesheetButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer"]
-margin_left = 46.0
-margin_right = 135.0
+[node name="SaveTilesheetButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/Grid"]
+margin_left = 109.0
+margin_right = 206.0
 margin_bottom = 22.0
-text = "Slice & Save"
+text = "Export Layers"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls"]
-margin_top = 52.0
-margin_right = 135.0
-margin_bottom = 74.0
-text = "E - Erase   P - Paint"
+[node name="LoadProjectButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/Grid"]
+margin_top = 26.0
+margin_right = 105.0
+margin_bottom = 48.0
+text = "Load Project"
 
-[node name="Grid Options" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3"]
-margin_left = 155.0
-margin_right = 714.0
+[node name="SaveProjectButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/Grid"]
+margin_left = 109.0
+margin_top = 26.0
+margin_right = 206.0
+margin_bottom = 48.0
+text = "Save Project"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Grid Options" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 226.0
+margin_right = 730.0
 margin_bottom = 76.0
 size_flags_horizontal = 3
 
-[node name="Grid Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options"]
-margin_right = 559.0
+[node name="Grid Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options"]
+margin_right = 504.0
 margin_bottom = 22.0
 text = "Grid Options"
 
-[node name="GridContainer" type="GridContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options"]
+[node name="GridContainer" type="GridContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options"]
 margin_top = 26.0
-margin_right = 559.0
+margin_right = 504.0
 margin_bottom = 76.0
 columns = 2
 
-[node name="GridEdgeLength" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer"]
+[node name="GridEdgeLength" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer"]
 margin_right = 300.0
 margin_bottom = 24.0
 
-[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridEdgeLength"]
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridEdgeLength"]
 margin_right = 120.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_vertical = 1
 text = "Edge Length"
 
-[node name="GridEdgeLengthSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridEdgeLength"]
+[node name="GridEdgeLengthSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridEdgeLength"]
 margin_left = 124.0
 margin_right = 200.0
 margin_bottom = 24.0
@@ -134,31 +156,31 @@ min_value = 1.0
 value = 1.0
 allow_greater = true
 
-[node name="GridTileBorder" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer"]
+[node name="GridTileBorder" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer"]
 margin_left = 304.0
 margin_right = 504.0
 margin_bottom = 24.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder"]
 margin_right = 120.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 0
 
-[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/HBoxContainer"]
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/HBoxContainer"]
 margin_top = 1.0
 margin_right = 92.0
 margin_bottom = 23.0
 size_flags_horizontal = 3
 text = "Tile Border"
 
-[node name="GridTileBorderEnabledCheckBox" type="CheckBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/HBoxContainer"]
+[node name="GridTileBorderEnabledCheckBox" type="CheckBox" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/HBoxContainer"]
 margin_left = 96.0
 margin_right = 120.0
 margin_bottom = 24.0
 pressed = true
 
-[node name="GridTileBorderSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder"]
+[node name="GridTileBorderSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder"]
 margin_left = 124.0
 margin_right = 200.0
 margin_bottom = 24.0
@@ -166,36 +188,74 @@ size_flags_vertical = 3
 value = 1.0
 allow_greater = true
 
-[node name="GridOffset" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer"]
+[node name="GridOffset" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer"]
 margin_top = 28.0
 margin_right = 300.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 0
 
-[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset"]
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset"]
 margin_right = 120.0
 margin_bottom = 22.0
 rect_min_size = Vector2( 120, 0 )
 text = "Offset"
 
-[node name="OffsetXSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset"]
+[node name="OffsetXSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset"]
 margin_left = 124.0
 margin_right = 200.0
 margin_bottom = 22.0
 allow_greater = true
 allow_lesser = true
 
-[node name="OffsetYSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset"]
+[node name="OffsetYSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset"]
 margin_left = 204.0
 margin_right = 280.0
 margin_bottom = 22.0
 allow_greater = true
 allow_lesser = true
 
+[node name="LoadedTilesheet" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer"]
+margin_top = 80.0
+margin_right = 730.0
+margin_bottom = 102.0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/LoadedTilesheet"]
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 120, 0 )
+text = "Tilesheet Path:"
+
+[node name="LoadedTilesheetLabel" type="Label" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/LoadedTilesheet"]
+margin_left = 124.0
+margin_right = 730.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "some/path/to/my/tilehseet"
+autowrap = true
+
+[node name="LoadedProject" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer"]
+margin_top = 106.0
+margin_right = 730.0
+margin_bottom = 128.0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/LoadedProject"]
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 120, 0 )
+text = "Project Path:"
+
+[node name="LoadedProjectLabel" type="Label" parent="Panel/HBoxContainer/VBoxContainer/VBoxContainer/LoadedProject"]
+margin_left = 124.0
+margin_right = 730.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "some/path/to/my/project"
+autowrap = true
+
 [node name="ViewportContainer" type="ViewportContainer" parent="Panel/HBoxContainer/VBoxContainer"]
-margin_top = 86.0
-margin_right = 714.0
+margin_top = 138.0
+margin_right = 730.0
 margin_bottom = 560.0
 mouse_filter = 2
 size_flags_vertical = 3
@@ -205,15 +265,15 @@ __meta__ = {
 }
 
 [node name="Viewport" type="Viewport" parent="Panel/HBoxContainer/VBoxContainer/ViewportContainer"]
-size = Vector2( 714, 474 )
+size = Vector2( 730, 422 )
 handle_input_locally = false
 render_target_update_mode = 3
 
 [node name="EditorWorld" parent="Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport" instance=ExtResource( 2 )]
 
 [node name="RightTab" type="VBoxContainer" parent="Panel/HBoxContainer"]
-margin_left = 734.0
-margin_right = 984.0
+margin_left = 750.0
+margin_right = 1000.0
 margin_bottom = 560.0
 rect_min_size = Vector2( 250, 0 )
 mouse_filter = 2
@@ -335,10 +395,41 @@ margin_top = 100.0
 margin_right = -200.0
 margin_bottom = -100.0
 rect_min_size = Vector2( 400, 140 )
-window_title = "Save Cropped Tilesheet"
+window_title = "Save Exported Layers"
 resizable = true
 access = 2
 filters = PoolStringArray( "*.png ; PNG Images" )
+current_dir = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer"
+current_path = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer/"
+
+[node name="LoadProjectDialog" type="FileDialog" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = 100.0
+margin_right = -200.0
+margin_bottom = -100.0
+rect_min_size = Vector2( 400, 140 )
+window_title = "Open a File"
+resizable = true
+mode = 0
+access = 2
+filters = PoolStringArray( "*.islice ; Isometric Tileslicer Project" )
+current_dir = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer"
+current_path = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer/"
+
+[node name="SaveProjectDialog" type="FileDialog" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = 100.0
+margin_right = -200.0
+margin_bottom = -100.0
+rect_min_size = Vector2( 400, 140 )
+window_title = "Save Project"
+resizable = true
+access = 2
+filters = PoolStringArray( "*.islice ; Isometric Tileslicer Project" )
 current_dir = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer"
 current_path = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer/"
 

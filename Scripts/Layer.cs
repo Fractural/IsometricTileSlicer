@@ -1,9 +1,21 @@
 using Godot;
 using GodotOnReady.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Color = Godot.Color;
 
 public partial class Layer : Node
 {
+    [Serializable]
+    public class Data
+    {
+        public Color LayerColor { get; set; }
+        public string LayerName { get; set; }
+        public bool Visible { get; set; }
+        public List<Vector3Int> TriangleTiles { get; set; } = new List<Vector3Int>();
+    }
+
     public void Construct(string layerName, bool visible, Color layerColor)
     {
         LayerName = layerName;
@@ -42,14 +54,21 @@ public partial class Layer : Node
     [OnReadyGet]
     public TriangleTileMap TriTileMap { get; set; }
     
-    public void Deserialize(string obj)
+    public void Deserialize(Data data)
     {
-        // TODO
+        LayerName = data.LayerName;
+        Visible = data.Visible;
+        LayerColor = data.LayerColor;
+        TriTileMap.AddTiles(data.TriangleTiles);
     }
 
-    public string Serialize()
+    public Data Serialize()
     {
-        // TODO
-        return null;
+        var data = new Data();
+        data.LayerName = LayerName;
+        data.Visible = Visible;
+        data.LayerColor = LayerColor;
+        data.TriangleTiles = TriTileMap.TriangleTiles.ToList();
+        return data;
     }
 }
