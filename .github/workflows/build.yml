@@ -2,8 +2,8 @@ name: "godot-ci export"
 on: push
 
 env:
-  GODOT_VERSION: 3.3.4
-  EXPORT_NAME: test-project
+  GODOT_VERSION: 3.4.2
+  EXPORT_NAME: isometric-tile-slicer
 
 jobs:
   export-windows:
