@@ -11,8 +11,12 @@ config_version=4
 [application]
 
 config/name="IsometricTileSlicer"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/editor_icon_previewer/plugin.cfg" )
 
 [input]
 

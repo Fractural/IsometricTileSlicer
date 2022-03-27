@@ -1,0 +1,363 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://PersonalTheme.tres" type="Theme" id=1]
+[ext_resource path="res://Scenes/EditorWorld.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Layer.tscn" type="PackedScene" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Scripts/Editor.cs" type="Script" id=5]
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+focus_mode = 1
+mouse_filter = 2
+theme = ExtResource( 1 )
+script = ExtResource( 5 )
+LayersHolderPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/LayersHolder")
+InfiniteGridPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/InfiniteTriangleGrid")
+SavedTextureRectPath = NodePath("Panel/HBoxContainer/RightTab/SavedTexture/SavedTextureRect")
+LoadedTextureRectPath = NodePath("Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld/LoadedTextureRect")
+LoadTilesheetButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer/LoadTilesheetButton")
+LoadTilesheetDialogPath = NodePath("LoadTilesheetDialog")
+SaveTilesheetButtonPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer/SaveTilesheetButton")
+SaveTilesheetDialogPath = NodePath("SaveTilesheetDialog")
+GridEdgeLengthSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridEdgeLength/GridEdgeLengthSpinBox")
+GridOffsetXSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset/OffsetXSpinBox")
+GridOffsetYSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset/OffsetYSpinBox")
+TileBorderSpinBoxPath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/GridTileBorderSpinBox")
+AddLayerButtonPath = NodePath("Panel/HBoxContainer/RightTab/Layers/VBoxContainer2/HBoxContainer/AddLayerButton")
+DeleteCurrentLayerButtonPath = NodePath("Panel/HBoxContainer/RightTab/LayerOptions/DeleteLayerButton")
+LayerNameLineEditPath = NodePath("Panel/HBoxContainer/RightTab/LayerOptions/LayerName/LayerNameLineEdit")
+LayerColorPickerButtonPath = NodePath("Panel/HBoxContainer/RightTab/LayerOptions/Color/LayerColorButton")
+LayersTreePath = NodePath("Panel/HBoxContainer/RightTab/Layers/VBoxContainer2/LayersTree")
+TileBorderEnabledTogglePath = NodePath("Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/HBoxContainer/GridTileBorderEnabledCheckBox")
+LayerOptionsPath = NodePath("Panel/HBoxContainer/RightTab/LayerOptions")
+layerPrefab = ExtResource( 3 )
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+mouse_filter = 2
+custom_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer"]
+margin_right = 714.0
+margin_bottom = 560.0
+mouse_filter = 2
+size_flags_horizontal = 3
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer"]
+margin_right = 714.0
+margin_bottom = 76.0
+custom_constants/separation = 20
+
+[node name="Main Controls" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_right = 135.0
+margin_bottom = 76.0
+
+[node name="Title Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls"]
+margin_right = 135.0
+margin_bottom = 22.0
+text = "Tile Slicer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls"]
+margin_top = 26.0
+margin_right = 135.0
+margin_bottom = 48.0
+mouse_filter = 2
+
+[node name="LoadTilesheetButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer"]
+margin_right = 42.0
+margin_bottom = 22.0
+text = "Load"
+
+[node name="SaveTilesheetButton" type="Button" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls/HBoxContainer"]
+margin_left = 46.0
+margin_right = 135.0
+margin_bottom = 22.0
+text = "Slice & Save"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Main Controls"]
+margin_top = 52.0
+margin_right = 135.0
+margin_bottom = 74.0
+text = "E - Erase   P - Paint"
+
+[node name="Grid Options" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 155.0
+margin_right = 714.0
+margin_bottom = 76.0
+size_flags_horizontal = 3
+
+[node name="Grid Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options"]
+margin_right = 559.0
+margin_bottom = 22.0
+text = "Grid Options"
+
+[node name="GridContainer" type="GridContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options"]
+margin_top = 26.0
+margin_right = 559.0
+margin_bottom = 76.0
+columns = 2
+
+[node name="GridEdgeLength" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer"]
+margin_right = 300.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridEdgeLength"]
+margin_right = 120.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 120, 0 )
+size_flags_vertical = 1
+text = "Edge Length"
+
+[node name="GridEdgeLengthSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridEdgeLength"]
+margin_left = 124.0
+margin_right = 200.0
+margin_bottom = 24.0
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="GridTileBorder" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer"]
+margin_left = 304.0
+margin_right = 504.0
+margin_bottom = 24.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder"]
+margin_right = 120.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 120, 0 )
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/HBoxContainer"]
+margin_top = 1.0
+margin_right = 92.0
+margin_bottom = 23.0
+size_flags_horizontal = 3
+text = "Tile Border"
+
+[node name="GridTileBorderEnabledCheckBox" type="CheckBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder/HBoxContainer"]
+margin_left = 96.0
+margin_right = 120.0
+margin_bottom = 24.0
+pressed = true
+
+[node name="GridTileBorderSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridTileBorder"]
+margin_left = 124.0
+margin_right = 200.0
+margin_bottom = 24.0
+size_flags_vertical = 3
+value = 1.0
+allow_greater = true
+
+[node name="GridOffset" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer"]
+margin_top = 28.0
+margin_right = 300.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 300, 0 )
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset"]
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 120, 0 )
+text = "Offset"
+
+[node name="OffsetXSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset"]
+margin_left = 124.0
+margin_right = 200.0
+margin_bottom = 22.0
+allow_greater = true
+allow_lesser = true
+
+[node name="OffsetYSpinBox" type="SpinBox" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer3/Grid Options/GridContainer/GridOffset"]
+margin_left = 204.0
+margin_right = 280.0
+margin_bottom = 22.0
+allow_greater = true
+allow_lesser = true
+
+[node name="ViewportContainer" type="ViewportContainer" parent="Panel/HBoxContainer/VBoxContainer"]
+margin_top = 86.0
+margin_right = 714.0
+margin_bottom = 560.0
+mouse_filter = 2
+size_flags_vertical = 3
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="Panel/HBoxContainer/VBoxContainer/ViewportContainer"]
+size = Vector2( 714, 474 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="EditorWorld" parent="Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport" instance=ExtResource( 2 )]
+
+[node name="RightTab" type="VBoxContainer" parent="Panel/HBoxContainer"]
+margin_left = 734.0
+margin_right = 984.0
+margin_bottom = 560.0
+rect_min_size = Vector2( 250, 0 )
+mouse_filter = 2
+custom_constants/separation = 10
+
+[node name="Layers" type="HBoxContainer" parent="Panel/HBoxContainer/RightTab"]
+margin_right = 250.0
+margin_bottom = 258.0
+size_flags_vertical = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/HBoxContainer/RightTab/Layers"]
+margin_right = 250.0
+margin_bottom = 258.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer/RightTab/Layers/VBoxContainer2"]
+margin_right = 250.0
+margin_bottom = 22.0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/RightTab/Layers/VBoxContainer2/HBoxContainer"]
+margin_right = 226.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "Layers"
+
+[node name="AddLayerButton" type="Button" parent="Panel/HBoxContainer/RightTab/Layers/VBoxContainer2/HBoxContainer"]
+margin_left = 230.0
+margin_right = 250.0
+margin_bottom = 22.0
+size_flags_vertical = 3
+text = "+"
+
+[node name="LayersTree" type="Tree" parent="Panel/HBoxContainer/RightTab/Layers/VBoxContainer2"]
+margin_top = 32.0
+margin_right = 250.0
+margin_bottom = 258.0
+size_flags_vertical = 3
+
+[node name="LayerOptions" type="VBoxContainer" parent="Panel/HBoxContainer/RightTab"]
+margin_top = 268.0
+margin_right = 250.0
+margin_bottom = 368.0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/RightTab/LayerOptions"]
+margin_right = 250.0
+margin_bottom = 22.0
+text = "Layer Options"
+
+[node name="LayerName" type="HBoxContainer" parent="Panel/HBoxContainer/RightTab/LayerOptions"]
+margin_top = 26.0
+margin_right = 250.0
+margin_bottom = 48.0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/RightTab/LayerOptions/LayerName"]
+margin_right = 100.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 100, 0 )
+text = "Name"
+
+[node name="LayerNameLineEdit" type="LineEdit" parent="Panel/HBoxContainer/RightTab/LayerOptions/LayerName"]
+margin_left = 104.0
+margin_right = 250.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+
+[node name="Color" type="HBoxContainer" parent="Panel/HBoxContainer/RightTab/LayerOptions"]
+margin_top = 52.0
+margin_right = 250.0
+margin_bottom = 74.0
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/RightTab/LayerOptions/Color"]
+margin_right = 100.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 100, 0 )
+text = "Color"
+
+[node name="LayerColorButton" type="ColorPickerButton" parent="Panel/HBoxContainer/RightTab/LayerOptions/Color"]
+margin_left = 104.0
+margin_right = 250.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+color = Color( 1, 0, 0, 1 )
+
+[node name="DeleteLayerButton" type="Button" parent="Panel/HBoxContainer/RightTab/LayerOptions"]
+margin_top = 78.0
+margin_right = 250.0
+margin_bottom = 100.0
+text = "Delete"
+
+[node name="SavedTexture" type="VBoxContainer" parent="Panel/HBoxContainer/RightTab"]
+margin_top = 378.0
+margin_right = 250.0
+margin_bottom = 560.0
+mouse_filter = 2
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/RightTab/SavedTexture"]
+margin_right = 250.0
+margin_bottom = 22.0
+text = "Saved Texture"
+
+[node name="SavedTextureRect" type="TextureRect" parent="Panel/HBoxContainer/RightTab/SavedTexture"]
+margin_top = 32.0
+margin_right = 250.0
+margin_bottom = 182.0
+rect_min_size = Vector2( 150, 150 )
+mouse_filter = 2
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="LoadTilesheetDialog" type="FileDialog" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = 100.0
+margin_right = -200.0
+margin_bottom = -100.0
+rect_min_size = Vector2( 400, 140 )
+window_title = "Open a File"
+resizable = true
+mode = 0
+access = 2
+filters = PoolStringArray( "*.png ; PNG Images" )
+current_dir = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer"
+current_path = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer/"
+
+[node name="SaveTilesheetDialog" type="FileDialog" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = 100.0
+margin_right = -200.0
+margin_bottom = -100.0
+rect_min_size = Vector2( 400, 140 )
+window_title = "Save Cropped Tilesheet"
+resizable = true
+access = 2
+filters = PoolStringArray( "*.png ; PNG Images" )
+current_dir = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer"
+current_path = "/Users/Alan/Documents/Godot/Projects/IsometricTileSlicer/"
+
+[editable path="Panel/HBoxContainer/VBoxContainer/ViewportContainer/Viewport/EditorWorld"]
